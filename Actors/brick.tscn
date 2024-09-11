@@ -1,4 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://bky660vw4blfu"]
+[gd_scene load_steps=4 format=3 uid="uid://bky660vw4blfu"]
+
+[ext_resource type="Script" path="res://Actors/brick.gd" id="1_4da3t"]
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_xm7up"]
 
@@ -7,6 +9,7 @@ size = Vector2(100, 40)
 
 [node name="Brick" type="CharacterBody2D" groups=["Bricks"]]
 motion_mode = 1
+script = ExtResource("1_4da3t")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 scale = Vector2(100, 40)

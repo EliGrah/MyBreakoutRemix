@@ -1,9 +1,10 @@
-[gd_scene load_steps=12 format=3 uid="uid://dlcsl2b4tiuu5"]
+[gd_scene load_steps=15 format=3 uid="uid://dlcsl2b4tiuu5"]
 
 [ext_resource type="Script" path="res://Actors/ball.gd" id="1_q7xo7"]
 [ext_resource type="Script" path="res://Actors/paddle.gd" id="2_a6fvk"]
-[ext_resource type="PackedScene" uid="uid://bky660vw4blfu" path="res://Actors/brick.tscn" id="3_p5lpf"]
+[ext_resource type="PackedScene" uid="uid://bwl5s2nd8a88a" path="res://Actors/ballTrail.tscn" id="2_r2evp"]
 [ext_resource type="Script" path="res://brick_manager.gd" id="3_tyfe8"]
+[ext_resource type="PackedScene" uid="uid://bky660vw4blfu" path="res://Actors/brick.tscn" id="5_rlgjq"]
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_bam4x"]
 
@@ -21,18 +22,31 @@ size = Vector2(1149, 39)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dq2fv"]
 size = Vector2(20, 661)
 
+[sub_resource type="Environment" id="Environment_a5lsh"]
+background_mode = 3
+glow_enabled = true
+glow_intensity = 2.0
+glow_bloom = 1.0
+glow_hdr_luminance_cap = 9.9
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7liwj"]
 size = Vector2(2036, 44)
 
+[sub_resource type="CanvasTexture" id="CanvasTexture_aj5nq"]
+
 [node name="Main" type="Node2D"]
 
-[node name="Ball" type="CharacterBody2D" parent="." node_paths=PackedStringArray("score_label", "start_text")]
+[node name="Ball" type="CharacterBody2D" parent="." node_paths=PackedStringArray("score_label", "start_text", "lives_text")]
 visible = false
+modulate = Color(0, 0, 1, 1)
+self_modulate = Color(71.164, 58.465, 91.27, 1)
 position = Vector2(570, 419)
+collision_mask = 3
 motion_mode = 1
 script = ExtResource("1_q7xo7")
 score_label = NodePath("../Score")
 start_text = NodePath("../StartText")
+lives_text = NodePath("../Lives")
 
 [node name="Sprite2D" type="Sprite2D" parent="Ball"]
 scale = Vector2(40, 40)
@@ -41,8 +55,12 @@ texture = SubResource("CanvasTexture_bam4x")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Ball"]
 shape = SubResource("RectangleShape2D_60wnu")
 
+[node name="trail" parent="Ball" instance=ExtResource("2_r2evp")]
+
 [node name="Paddle" type="CharacterBody2D" parent="." groups=["Paddle"]]
 position = Vector2(695, 579)
+collision_layer = 2
+collision_mask = 0
 motion_mode = 1
 script = ExtResource("2_a6fvk")
 
@@ -81,6 +99,14 @@ offset_bottom = 114.0
 theme_override_font_sizes/normal_font_size = 40
 text = "SCORE: 0"
 
+[node name="Lives" type="RichTextLabel" parent="."]
+offset_left = 974.0
+offset_top = 17.0
+offset_right = 1551.0
+offset_bottom = 114.0
+theme_override_font_sizes/normal_font_size = 40
+text = "LIVES: 3"
+
 [node name="StartText" type="RichTextLabel" parent="."]
 offset_left = 417.0
 offset_top = 388.0
@@ -88,6 +114,9 @@ offset_right = 752.0
 offset_bottom = 483.0
 theme_override_font_sizes/normal_font_size = 40
 text = "[CLICK TO START]"
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_a5lsh")
 
 [node name="GameOver" type="StaticBody2D" parent="." groups=["GameOver"]]
 position = Vector2(539, 697)
@@ -97,4 +126,11 @@ shape = SubResource("RectangleShape2D_7liwj")
 
 [node name="BrickManager" type="Node2D" parent="."]
 script = ExtResource("3_tyfe8")
-brick_scene = ExtResource("3_p5lpf")
+brick_scene = ExtResource("5_rlgjq")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(0, 0, 0, 1)
+z_index = -1
+position = Vector2(651, 328)
+scale = Vector2(2796.94, 819.327)
+texture = SubResource("CanvasTexture_aj5nq")
